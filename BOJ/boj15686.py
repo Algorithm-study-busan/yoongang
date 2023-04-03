@@ -36,9 +36,6 @@ for i in range(n):
     elif city[i][j] == 1:
       house.append((i, j))
 
-dr = [0, 1, 0, -1]
-dc = [1, 0, -1, 0]
-
 store = []
 result2 = []
 f(0)
