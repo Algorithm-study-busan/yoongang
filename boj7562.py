@@ -23,7 +23,6 @@ def bfs(r, c):
           print(board[now_r][now_c])
           return
 
-
 dr = [1, 2, 2, 1, -1, -2, -2, -1]
 dc = [2, 1, -1, -2, -2, -1, 1, 2]
 
@@ -33,12 +32,12 @@ for _ in range(t):
   l = int(input())
   board = [[0] * l for _ in range(l)]
 
-  nr, nc = map(int, input().split())
+  sr, sc = map(int, input().split())
   rr, rc = map(int, input().split())
-  if nr == rr and nc == rc:
+  if sr == rr and sc == rc:
     print(0)
     continue
   
   board[rr][rc] = INF
 
-  bfs(nr, nc)
+  bfs(sr, sc)
