@@ -1,40 +1,27 @@
 from collections import deque
 
-t = int(input())
+n, k = map(int, input().split())
 
-for _ in range(t):
-  p = input()
-  n = int(input())
-  nums = input()
-  nums = nums.replace('[','')
-  nums = nums.replace(']','')
-  nums = deque(nums.split(','))
+INF = int(1e9)
+graph = [INF] * 100_001
 
-  if n == 0 and 'D' in p:
-    print('error')
-    continue
+def bfs(graph, n, k):
+  q = deque()
+  q.append(n)
+  graph[n] = 0
   
-  tmp = 0
-  err = False
-  for c in p:
-    if c == 'R':
-      tmp = 0 if tmp == -1 else -1
-      continue
-    
-    if n == 0:
-      err = True
-      print('error')
-      break
+  while q:
+    now = q.popleft()
+    if now == k:
+      return graph[now]
+    if now + 1 <= 100_000 and graph[now + 1] == INF:
+      graph[now + 1] = graph[now] + 1
+      q.append(now + 1)
+    if now - 1 >= 0 and graph[now - 1] == INF:
+      graph[now - 1] = graph[now] + 1
+      q.append(now - 1)
+    if now * 2 <= 100_000 and graph[now * 2] == INF:
+      graph[now * 2] = graph[now] + 1
+      q.append(now * 2)
 
-    if tmp == 0:
-      nums.popleft()
-    else:
-      nums.pop()
-    n -= 1
-  
-  if err: continue
-
-  if tmp == -1:
-    nums.reverse()
-  
-  print('[' + ','.join(nums) + ']')
+print(bfs(graph, n, k))
