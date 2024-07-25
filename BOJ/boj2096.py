@@ -1,15 +1,11 @@
-import sys
-input = sys.stdin.readline
-
 n = int(input())
 
-dp_max = [0] * 3
-dp_min = [0] * 3
-
+max_score = [0] * 3
+min_score = [0] * 3
 for _ in range(n):
   a, b, c = map(int, input().split())
 
-  dp_max = [max(dp_max[0], dp_max[1]) + a, max(dp_max[0], dp_max[1], dp_max[2]) + b, max(dp_max[1], dp_max[2]) + c]
-  dp_min = [min(dp_min[0], dp_min[1]) + a, min(dp_min[0], dp_min[1], dp_min[2]) + b, min(dp_min[1], dp_min[2]) + c]
+  max_score = [max(max_score[:2]) + a, max(max_score) + b, max(max_score[1:]) + c]
+  min_score = [min(min_score[:2]) + a, min(min_score) + b, min(min_score[1:]) + c]
 
-print(max(dp_max), min(dp_min))
+print(max(max_score), min(min_score))
