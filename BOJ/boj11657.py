@@ -1,34 +1,29 @@
-import sys
-input = sys.stdin.readline
 INF = int(1e9)
 
-def bf():
+def bellman_ford():
   distance[1] = 0
 
   for i in range(n):
-    for j in range(m):
-      now, next, cost = graph[j]
-
-      if distance[now] != INF and distance[next] > distance[now] + cost:
-        distance[next] = distance[now] + cost
+    for start, end, dist in edges:
+      if distance[start] != INF and distance[end] > distance[start] + dist:
+        distance[end] = distance[start] + dist
 
         if i == n - 1:
-          return True
-        
-  return False
+          return False
+  
+  return True
 
 n, m = map(int, input().split())
 
-graph = []
+edges = []
 for _ in range(m):
   a, b, c = map(int, input().split())
-  graph.append((a, b, c))
+  edges.append((a, b, c))
 
 distance = [INF] * (n + 1)
+result = bellman_ford()
 
-negative_cycle = bf()
-
-if negative_cycle:
+if not result:
   print(-1)
 else:
   for i in range(2, n + 1):

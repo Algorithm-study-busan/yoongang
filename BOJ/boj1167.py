@@ -1,31 +1,38 @@
-import sys
-input = sys.stdin.readline
+from collections import deque
 
-def dfs(start):
-  for next_node, d in graph[start]:
-    if distance[next_node] == -1:
-      distance[next_node] = distance[start] + d
-      dfs(next_node)
+INF = int(1e9)
+
+def bfs(graph, start, distance):
+  q = deque()
+  q.append(start)
+  distance[start] = 0
+
+  while q:
+    now = q.popleft()
+    
+    for next, dist in graph[now]:
+      if distance[next] == INF:
+        distance[next] = dist + distance[now]
+        q.append(next)
+  
+  return distance.index(max(distance[1:]))
 
 v = int(input())
+
 graph = [[] for _ in range(v + 1)]
 for _ in range(v):
-  lst = list(map(int, input().split()))
-  lst.pop()
+  tmp = list(map(int, input().split()))
+  a = tmp[0]
+  lst = tmp[1:]
+  for i in range(len(lst) // 2):
+    graph[a].append((lst[i * 2], lst[(i * 2) + 1]))
 
-  for i in range(1, len(lst), 2):
-    graph[lst[0]].append((lst[i], lst[i + 1]))
-    graph[lst[i]].append((lst[0], lst[i + 1]))
+# 임의의 정점에서 가장 먼 거리에 있는 노드를 구하고(거리1)
+# 그 노드에서 가장 먼 거리에 있는 노드를 구했을때(거리2)
+# 두 거리 중 더 큰 거리가 트리의 지름이다.
+distance = [INF] * (v + 1)
+next = bfs(graph, 1, distance)
+distance = [INF] * (v + 1)
+result = bfs(graph, next, distance)
 
-for i in range(1, v + 1):
-  graph[i] = list(set(graph[i]))
-
-distance = [-1] * (v + 1)
-distance[1] = 0
-dfs(1)
-n1 = distance.index(max(distance))
-
-distance = [-1] * (v + 1)
-distance[n1] = 0
-dfs(n1)
-print(max(distance))
+print(distance[result])
