@@ -1,12 +1,22 @@
-import sys
-sys.setrecursionlimit(1000000)
-input = sys.stdin.readline
+import heapq
 
-def dfs(start):
-  for next_node, d in graph[start]:
-    if distance[next_node] == -1:
-      distance[next_node] = distance[start] + d
-      dfs(next_node)
+INF = int(1e9)
+
+def dijkstra(start, distance):
+  q = []
+  heapq.heappush(q, (0, start))
+  distance[start] = 0
+
+  while q:
+    dist, now = heapq.heappop(q)
+
+    if distance[now] < dist: continue
+
+    for next, d in graph[now]:
+      cost = dist + d
+      if cost < distance[next]:
+        distance[next] = cost
+        heapq.heappush(q, (cost, next))
 
 n = int(input())
 
@@ -16,12 +26,10 @@ for _ in range(n - 1):
   graph[a].append((b, c))
   graph[b].append((a, c))
 
-distance = [-1] * (n + 1)
-distance[1] = 0
-dfs(1)
-n1 = distance.index(max(distance))
+distance1 = [INF] * (n + 1)
+dijkstra(1, distance1)
+idx = distance1.index(max(distance1[1:]))
 
-distance = [-1] * (n + 1)
-distance[n1] = 0
-dfs(n1)
-print(max(distance))
+distance2 = [INF] * (n + 1)
+dijkstra(idx, distance2)
+print(max(distance2[1:]))
