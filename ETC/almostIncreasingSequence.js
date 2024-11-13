@@ -1,6 +1,6 @@
 function solution(sequence) {
-  const sorted = [...sequence].sort((a, b) => a - b);
-  const sortedSequence = [...new Set(sorted)];
+  const uniqueSequence = new Set(sequence);
+  const sortedSequence = [...uniqueSequence].sort((a, b) => a - b);
 
   let now = 0;
   let removed = false; // 제거된 원소가 있는지 확인
